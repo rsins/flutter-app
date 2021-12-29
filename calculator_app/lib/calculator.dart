@@ -14,8 +14,8 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
-  var userInput = '';
-  var answer = '';
+  var userCalcInput = '';
+  var calcOutput = '';
 
   bool isOperatorButton(String buttonStr) {
     if (ButtonConstants.buttonOperatorItems.contains(buttonStr)) {
@@ -26,14 +26,14 @@ class _CalculatorState extends State<Calculator> {
 
 // function to calculate the input operation
   void equalButtonPressed() {
-    String finaluserinput = userInput;
-    finaluserinput = userInput.replaceAll(ButtonConstants.multiply, '*');
+    String finaluserinput = userCalcInput;
+    finaluserinput = userCalcInput.replaceAll(ButtonConstants.multiply, '*');
 
     Parser p = Parser();
     Expression exp = p.parse(finaluserinput);
     ContextModel cm = ContextModel();
     double eval = exp.evaluate(EvaluationType.REAL, cm);
-    answer = eval.toString();
+    calcOutput = eval.toString();
   }
 
   @override
@@ -48,7 +48,7 @@ class _CalculatorState extends State<Calculator> {
                   padding: const EdgeInsets.all(20),
                   alignment: Alignment.centerRight,
                   child: Text(
-                    userInput,
+                    userCalcInput,
                     style: const TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
@@ -56,7 +56,7 @@ class _CalculatorState extends State<Calculator> {
                   padding: const EdgeInsets.all(15),
                   alignment: Alignment.centerRight,
                   child: Text(
-                    answer,
+                    calcOutput,
                     style: const TextStyle(
                         fontSize: 30,
                         color: Colors.white,
@@ -79,8 +79,8 @@ class _CalculatorState extends State<Calculator> {
                   return CalculatorButton(
                     buttonTapped: () {
                       setState(() {
-                        userInput = '';
-                        answer = '0';
+                        userCalcInput = '';
+                        calcOutput = '0';
                       });
                     },
                     buttonText: buttonText,
@@ -102,7 +102,7 @@ class _CalculatorState extends State<Calculator> {
                   return CalculatorButton(
                     buttonTapped: () {
                       setState(() {
-                        userInput += buttonText;
+                        userCalcInput += buttonText;
                       });
                     },
                     buttonText: buttonText,
@@ -115,8 +115,8 @@ class _CalculatorState extends State<Calculator> {
                   return CalculatorButton(
                     buttonTapped: () {
                       setState(() {
-                        userInput =
-                            userInput.substring(0, userInput.length - 1);
+                        userCalcInput = userCalcInput.substring(
+                            0, userCalcInput.length - 1);
                       });
                     },
                     buttonText: buttonText,
@@ -142,7 +142,7 @@ class _CalculatorState extends State<Calculator> {
                   return CalculatorButton(
                     buttonTapped: () {
                       setState(() {
-                        userInput += buttonText;
+                        userCalcInput += buttonText;
                       });
                     },
                     buttonText: buttonText,
