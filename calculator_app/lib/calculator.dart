@@ -41,126 +41,120 @@ class _CalculatorState extends State<Calculator> {
     return Column(
       children: <Widget>[
         Expanded(
-          child: Container(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      userInput,
-                      style: const TextStyle(fontSize: 18, color: Colors.white),
-                    ),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    userInput,
+                    style: const TextStyle(fontSize: 18, color: Colors.white),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(15),
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      answer,
-                      style: const TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ]),
-          ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    answer,
+                    style: const TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+              ]),
         ),
         Expanded(
           flex: 3,
-          child: Container(
-            child: GridView.builder(
-                itemCount: ButtonConstants.buttonItems.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4),
-                itemBuilder: (BuildContext context, int index) {
-                  // Clear Button
-                  if (index == 0) {
-                    return CalculatorButton(
-                      buttonTapped: () {
-                        setState(() {
-                          userInput = '';
-                          answer = '0';
-                        });
-                      },
-                      buttonText: ButtonConstants.buttonItems[index],
-                      bgColor: Colors.blue[50],
-                      fgColor: Colors.black,
-                    );
-                  }
+          child: GridView.builder(
+              itemCount: ButtonConstants.buttonItems.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4),
+              itemBuilder: (BuildContext context, int index) {
+                final String buttonText = ButtonConstants.buttonItems[index];
 
-                  // +/- button
-                  else if (index == 1) {
-                    return CalculatorButton(
-                      buttonTapped: () {},
-                      buttonText: ButtonConstants.buttonItems[index],
-                      bgColor: Colors.blue[50],
-                      fgColor: Colors.black,
-                    );
-                  }
-                  // % Button
-                  else if (index == 2) {
-                    return CalculatorButton(
-                      buttonTapped: () {
-                        setState(() {
-                          userInput += ButtonConstants.buttonItems[index];
-                        });
-                      },
-                      buttonText: ButtonConstants.buttonItems[index],
-                      bgColor: Colors.blue[50],
-                      fgColor: Colors.black,
-                    );
-                  }
-                  // Delete Button
-                  else if (index == 3) {
-                    return CalculatorButton(
-                      buttonTapped: () {
-                        setState(() {
-                          userInput =
-                              userInput.substring(0, userInput.length - 1);
-                        });
-                      },
-                      buttonText: ButtonConstants.buttonItems[index],
-                      bgColor: Colors.blue[50],
-                      fgColor: Colors.black,
-                    );
-                  }
-                  // Equal_to Button
-                  else if (index == 18) {
-                    return CalculatorButton(
-                      buttonTapped: () {
-                        setState(() {
-                          equalButtonPressed();
-                        });
-                      },
-                      buttonText: ButtonConstants.buttonItems[index],
-                      bgColor: Colors.orange[700],
-                      fgColor: Colors.white,
-                    );
-                  }
-
-                  // other buttons
-                  else {
-                    return CalculatorButton(
-                      buttonTapped: () {
-                        setState(() {
-                          userInput += ButtonConstants.buttonItems[index];
-                        });
-                      },
-                      buttonText: ButtonConstants.buttonItems[index],
-                      bgColor:
-                          isOperatorButton(ButtonConstants.buttonItems[index])
-                              ? Colors.blueAccent
-                              : Colors.white,
-                      fgColor:
-                          isOperatorButton(ButtonConstants.buttonItems[index])
-                              ? Colors.white
-                              : Colors.black,
-                    );
-                  }
-                }),
-          ),
+                // Handle Clear Button
+                if (buttonText == ButtonConstants.clear) {
+                  return CalculatorButton(
+                    buttonTapped: () {
+                      setState(() {
+                        userInput = '';
+                        answer = '0';
+                      });
+                    },
+                    buttonText: buttonText,
+                    bgColor: Colors.blue[50],
+                    fgColor: Colors.black,
+                  );
+                }
+                // Handle +/- Button
+                else if (buttonText == ButtonConstants.reverseSign) {
+                  return CalculatorButton(
+                    buttonTapped: () {},
+                    buttonText: buttonText,
+                    bgColor: Colors.blue[50],
+                    fgColor: Colors.black,
+                  );
+                }
+                // Handle % Button
+                else if (buttonText == ButtonConstants.percent) {
+                  return CalculatorButton(
+                    buttonTapped: () {
+                      setState(() {
+                        userInput += buttonText;
+                      });
+                    },
+                    buttonText: buttonText,
+                    bgColor: Colors.blue[50],
+                    fgColor: Colors.black,
+                  );
+                }
+                // Handle Delete Button
+                else if (buttonText == ButtonConstants.delete) {
+                  return CalculatorButton(
+                    buttonTapped: () {
+                      setState(() {
+                        userInput =
+                            userInput.substring(0, userInput.length - 1);
+                      });
+                    },
+                    buttonText: buttonText,
+                    bgColor: Colors.blue[50],
+                    fgColor: Colors.black,
+                  );
+                }
+                // Handle Equal Button
+                else if (buttonText == ButtonConstants.equal) {
+                  return CalculatorButton(
+                    buttonTapped: () {
+                      setState(() {
+                        equalButtonPressed();
+                      });
+                    },
+                    buttonText: buttonText,
+                    bgColor: Colors.orange[700],
+                    fgColor: Colors.white,
+                  );
+                }
+                // Handle Other Buttons
+                else {
+                  return CalculatorButton(
+                    buttonTapped: () {
+                      setState(() {
+                        userInput += buttonText;
+                      });
+                    },
+                    buttonText: buttonText,
+                    bgColor: isOperatorButton(buttonText)
+                        ? Colors.blueAccent
+                        : Colors.white,
+                    fgColor: isOperatorButton(buttonText)
+                        ? Colors.white
+                        : Colors.black,
+                  );
+                }
+              }),
         ),
       ],
     );

@@ -19,21 +19,19 @@ class CalculatorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: buttonTapped,
-      child: Padding(
-        padding: const EdgeInsets.all(0.2),
-        child: ClipRRect(
-          child: Container(
-            color: bgColor,
-            child: Center(
-              child: Text(
-                buttonText,
-                style: TextStyle(
-                  color: fgColor,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Padding(
+      padding: const EdgeInsets.all(0.4),
+      child: Container(
+        color: bgColor,
+        child: TextButton(
+          onPressed: buttonTapped,
+          child: Center(
+            child: Text(
+              buttonText,
+              style: TextStyle(
+                color: fgColor,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
