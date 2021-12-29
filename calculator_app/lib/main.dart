@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 
 import './calculator.dart';
@@ -35,7 +33,7 @@ class MyApp extends StatelessWidget {
 
   void _handleAppMenuClick(BuildContext context, String value) {
     switch (value) {
-      case Constants.menuAbout:
+      case MenuConstants.menuAbout:
         _showAboutDialog(context);
         break;
     }
@@ -44,7 +42,7 @@ class MyApp extends StatelessWidget {
   PopupMenuButton<String> _buildAppMenu(BuildContext context) {
     return PopupMenuButton<String>(
       itemBuilder: (context) {
-        return Constants.menuItems.map((String choice) {
+        return MenuConstants.menuItems.map((String choice) {
           return PopupMenuItem<String>(
             value: choice,
             child: TextButton(
@@ -74,6 +72,7 @@ class MyApp extends StatelessWidget {
             _buildAppMenu(context),
           ],
         ),
+        backgroundColor: Colors.white38,
         body: const Calculator(),
       ),
     );
