@@ -34,7 +34,7 @@ class _CalculatorState extends State<Calculator> {
   // }
 
   // function to calculate the input operation
-  void equalButtonPressed() {
+  void _equalButtonPressed() {
     if (userCalcInput.isNotEmpty) {
       String finaluserinput = userCalcInput;
       finaluserinput = userCalcInput.replaceAll(ButtonConstants.multiply, '*');
@@ -47,6 +47,93 @@ class _CalculatorState extends State<Calculator> {
     } else {
       calcOutput = '0';
     }
+  }
+
+  List<Widget> _buildCalculatorButtons(BuildContext context) {
+    return ButtonConstants.buttonItems.map((buttonText) {
+      // Handle Clear Button
+      if (buttonText == ButtonConstants.clear) {
+        return CalculatorButton(
+          buttonTapped: () {
+            setState(() {
+              userCalcInput = '';
+              calcOutput = '0';
+            });
+          },
+          buttonText: buttonText,
+          bgColor: Colors.blue[50],
+          fgColor: Colors.black,
+        );
+      }
+      // Handle ( Button
+      else if (buttonText == ButtonConstants.startBracket) {
+        return CalculatorButton(
+          buttonTapped: () {
+            setState(() {
+              userCalcInput += buttonText;
+            });
+          },
+          buttonText: buttonText,
+          bgColor: Colors.blue[50],
+          fgColor: Colors.black,
+        );
+      }
+      // Handle ) Button
+      else if (buttonText == ButtonConstants.closeBracket) {
+        return CalculatorButton(
+          buttonTapped: () {
+            setState(() {
+              userCalcInput += buttonText;
+            });
+          },
+          buttonText: buttonText,
+          bgColor: Colors.blue[50],
+          fgColor: Colors.black,
+        );
+      }
+      // Handle Delete Button
+      else if (buttonText == ButtonConstants.delete) {
+        return CalculatorButton(
+          buttonTapped: () {
+            setState(() {
+              userCalcInput = (userCalcInput.isNotEmpty)
+                  ? userCalcInput.substring(0, userCalcInput.length - 1)
+                  : '';
+            });
+          },
+          buttonText: buttonText,
+          bgColor: Colors.blue[50],
+          fgColor: Colors.black,
+        );
+      }
+      // Handle Equal Button
+      else if (buttonText == ButtonConstants.equal) {
+        return CalculatorButton(
+          buttonTapped: () {
+            setState(() {
+              _equalButtonPressed();
+            });
+          },
+          buttonText: buttonText,
+          bgColor: Colors.orange[700],
+          fgColor: Colors.white,
+        );
+      }
+      // Handle Other Buttons
+      else {
+        return CalculatorButton(
+          buttonTapped: () {
+            setState(() {
+              userCalcInput += buttonText;
+            });
+          },
+          buttonText: buttonText,
+          bgColor:
+              isOperatorButton(buttonText) ? Colors.blueAccent : Colors.white,
+          fgColor: isOperatorButton(buttonText) ? Colors.white : Colors.black,
+        );
+      }
+    }).toList();
   }
 
   @override
@@ -80,101 +167,11 @@ class _CalculatorState extends State<Calculator> {
         ),
         Expanded(
           flex: 4,
-          child: GridView.builder(
-              itemCount: ButtonConstants.buttonItems.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                final String buttonText = ButtonConstants.buttonItems[index];
-
-                // Handle Clear Button
-                if (buttonText == ButtonConstants.clear) {
-                  return CalculatorButton(
-                    buttonTapped: () {
-                      setState(() {
-                        userCalcInput = '';
-                        calcOutput = '0';
-                      });
-                    },
-                    buttonText: buttonText,
-                    bgColor: Colors.blue[50],
-                    fgColor: Colors.black,
-                  );
-                }
-                // Handle ( Button
-                else if (buttonText == ButtonConstants.startBracket) {
-                  return CalculatorButton(
-                    buttonTapped: () {
-                      setState(() {
-                        userCalcInput += buttonText;
-                      });
-                    },
-                    buttonText: buttonText,
-                    bgColor: Colors.blue[50],
-                    fgColor: Colors.black,
-                  );
-                }
-                // Handle ) Button
-                else if (buttonText == ButtonConstants.closeBracket) {
-                  return CalculatorButton(
-                    buttonTapped: () {
-                      setState(() {
-                        userCalcInput += buttonText;
-                      });
-                    },
-                    buttonText: buttonText,
-                    bgColor: Colors.blue[50],
-                    fgColor: Colors.black,
-                  );
-                }
-                // Handle Delete Button
-                else if (buttonText == ButtonConstants.delete) {
-                  return CalculatorButton(
-                    buttonTapped: () {
-                      setState(() {
-                        userCalcInput = (userCalcInput.isNotEmpty)
-                            ? userCalcInput.substring(
-                                0, userCalcInput.length - 1)
-                            : '';
-                      });
-                    },
-                    buttonText: buttonText,
-                    bgColor: Colors.blue[50],
-                    fgColor: Colors.black,
-                  );
-                }
-                // Handle Equal Button
-                else if (buttonText == ButtonConstants.equal) {
-                  return CalculatorButton(
-                    buttonTapped: () {
-                      setState(() {
-                        equalButtonPressed();
-                      });
-                    },
-                    buttonText: buttonText,
-                    bgColor: Colors.orange[700],
-                    fgColor: Colors.white,
-                  );
-                }
-                // Handle Other Buttons
-                else {
-                  return CalculatorButton(
-                    buttonTapped: () {
-                      setState(() {
-                        userCalcInput += buttonText;
-                      });
-                    },
-                    buttonText: buttonText,
-                    bgColor: isOperatorButton(buttonText)
-                        ? Colors.blueAccent
-                        : Colors.white,
-                    fgColor: isOperatorButton(buttonText)
-                        ? Colors.white
-                        : Colors.black,
-                  );
-                }
-              }),
+          child: GridView.count(
+            crossAxisCount: 4,
+            shrinkWrap: true,
+            children: _buildCalculatorButtons(context),
+          ),
         ),
       ],
     );
