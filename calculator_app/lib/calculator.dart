@@ -15,25 +15,38 @@ class Calculator extends StatefulWidget {
 
 class _CalculatorState extends State<Calculator> {
   var userCalcInput = '';
-  var calcOutput = '';
+  var calcOutput = '0';
 
   bool isOperatorButton(String buttonStr) {
-    if (ButtonConstants.buttonOperatorItems.contains(buttonStr)) {
-      return true;
-    }
-    return false;
+    return ButtonConstants.buttonOperatorItems.contains(buttonStr);
   }
 
-// function to calculate the input operation
-  void equalButtonPressed() {
-    String finaluserinput = userCalcInput;
-    finaluserinput = userCalcInput.replaceAll(ButtonConstants.multiply, '*');
+  // function to handle +/- button
+  // void reverseSignButtonPressed() {
+  //   if (userCalcInput.isNotEmpty) {
+  //     if (userCalcInput.startsWith('-(') && userCalcInput.endsWith(')')) {
+  //       userCalcInput = userCalcInput.substring(2, userCalcInput.length - 1);
+  //     } else {
+  //       userCalcInput = '-(' + userCalcInput + ')';
+  //     }
+  //     equalButtonPressed();
+  //   }
+  // }
 
-    Parser p = Parser();
-    Expression exp = p.parse(finaluserinput);
-    ContextModel cm = ContextModel();
-    double eval = exp.evaluate(EvaluationType.REAL, cm);
-    calcOutput = eval.toString();
+  // function to calculate the input operation
+  void equalButtonPressed() {
+    if (userCalcInput.isNotEmpty) {
+      String finaluserinput = userCalcInput;
+      finaluserinput = userCalcInput.replaceAll(ButtonConstants.multiply, '*');
+
+      Parser p = Parser();
+      Expression exp = p.parse(finaluserinput);
+      ContextModel cm = ContextModel();
+      double eval = exp.evaluate(EvaluationType.REAL, cm);
+      calcOutput = eval.toString();
+    } else {
+      calcOutput = '0';
+    }
   }
 
   @override
@@ -45,15 +58,15 @@ class _CalculatorState extends State<Calculator> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(8),
                   alignment: Alignment.centerRight,
                   child: Text(
                     userCalcInput,
-                    style: const TextStyle(fontSize: 18, color: Colors.white),
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(2),
                   alignment: Alignment.centerRight,
                   child: Text(
                     calcOutput,
@@ -66,11 +79,12 @@ class _CalculatorState extends State<Calculator> {
               ]),
         ),
         Expanded(
-          flex: 3,
+          flex: 4,
           child: GridView.builder(
               itemCount: ButtonConstants.buttonItems.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4),
+                crossAxisCount: 4,
+              ),
               itemBuilder: (BuildContext context, int index) {
                 final String buttonText = ButtonConstants.buttonItems[index];
 
@@ -88,17 +102,21 @@ class _CalculatorState extends State<Calculator> {
                     fgColor: Colors.black,
                   );
                 }
-                // Handle +/- Button
-                else if (buttonText == ButtonConstants.reverseSign) {
+                // Handle ( Button
+                else if (buttonText == ButtonConstants.startBracket) {
                   return CalculatorButton(
-                    buttonTapped: () {},
+                    buttonTapped: () {
+                      setState(() {
+                        userCalcInput += buttonText;
+                      });
+                    },
                     buttonText: buttonText,
                     bgColor: Colors.blue[50],
                     fgColor: Colors.black,
                   );
                 }
-                // Handle % Button
-                else if (buttonText == ButtonConstants.percent) {
+                // Handle ) Button
+                else if (buttonText == ButtonConstants.closeBracket) {
                   return CalculatorButton(
                     buttonTapped: () {
                       setState(() {
@@ -115,8 +133,10 @@ class _CalculatorState extends State<Calculator> {
                   return CalculatorButton(
                     buttonTapped: () {
                       setState(() {
-                        userCalcInput = userCalcInput.substring(
-                            0, userCalcInput.length - 1);
+                        userCalcInput = (userCalcInput.isNotEmpty)
+                            ? userCalcInput.substring(
+                                0, userCalcInput.length - 1)
+                            : '';
                       });
                     },
                     buttonText: buttonText,

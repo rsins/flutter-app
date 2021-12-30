@@ -6,8 +6,8 @@ class MenuConstants {
 
 class ButtonConstants {
   static const String clear = 'C';
-  static const String reverseSign = '+/-';
-  static const String percent = '%';
+  static const String startBracket = '(';
+  static const String closeBracket = ')';
   static const String delete = 'DEL';
 
   static const String one = '1';
@@ -30,8 +30,8 @@ class ButtonConstants {
 
   static final List<String> buttonItems = [
     clear,
-    reverseSign,
-    percent,
+    startBracket,
+    closeBracket,
     delete,
     seven,
     eight,
