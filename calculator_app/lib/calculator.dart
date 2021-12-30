@@ -14,8 +14,8 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
-  var userCalcInput = '';
-  var calcOutput = '0';
+  var _userCalcInput = '';
+  var _calcOutput = '0';
 
   bool isOperatorButton(String buttonStr) {
     return ButtonConstants.buttonOperatorItems.contains(buttonStr);
@@ -35,17 +35,17 @@ class _CalculatorState extends State<Calculator> {
 
   // function to calculate the input operation
   void _equalButtonPressed() {
-    if (userCalcInput.isNotEmpty) {
-      String finaluserinput = userCalcInput;
-      finaluserinput = userCalcInput.replaceAll(ButtonConstants.multiply, '*');
+    if (_userCalcInput.isNotEmpty) {
+      String finaluserinput = _userCalcInput;
+      finaluserinput = _userCalcInput.replaceAll(ButtonConstants.multiply, '*');
 
       Parser p = Parser();
       Expression exp = p.parse(finaluserinput);
       ContextModel cm = ContextModel();
       double eval = exp.evaluate(EvaluationType.REAL, cm);
-      calcOutput = eval.toString();
+      _calcOutput = eval.toString();
     } else {
-      calcOutput = '0';
+      _calcOutput = '0';
     }
   }
 
@@ -56,8 +56,8 @@ class _CalculatorState extends State<Calculator> {
         return CalculatorButton(
           buttonTapped: () {
             setState(() {
-              userCalcInput = '';
-              calcOutput = '0';
+              _userCalcInput = '';
+              _calcOutput = '0';
             });
           },
           buttonText: buttonText,
@@ -70,7 +70,7 @@ class _CalculatorState extends State<Calculator> {
         return CalculatorButton(
           buttonTapped: () {
             setState(() {
-              userCalcInput += buttonText;
+              _userCalcInput += buttonText;
             });
           },
           buttonText: buttonText,
@@ -83,7 +83,7 @@ class _CalculatorState extends State<Calculator> {
         return CalculatorButton(
           buttonTapped: () {
             setState(() {
-              userCalcInput += buttonText;
+              _userCalcInput += buttonText;
             });
           },
           buttonText: buttonText,
@@ -96,8 +96,8 @@ class _CalculatorState extends State<Calculator> {
         return CalculatorButton(
           buttonTapped: () {
             setState(() {
-              userCalcInput = (userCalcInput.isNotEmpty)
-                  ? userCalcInput.substring(0, userCalcInput.length - 1)
+              _userCalcInput = (_userCalcInput.isNotEmpty)
+                  ? _userCalcInput.substring(0, _userCalcInput.length - 1)
                   : '';
             });
           },
@@ -124,7 +124,7 @@ class _CalculatorState extends State<Calculator> {
         return CalculatorButton(
           buttonTapped: () {
             setState(() {
-              userCalcInput += buttonText;
+              _userCalcInput += buttonText;
             });
           },
           buttonText: buttonText,
@@ -141,29 +141,32 @@ class _CalculatorState extends State<Calculator> {
     return Column(
       children: <Widget>[
         Expanded(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    userCalcInput,
-                    style: const TextStyle(fontSize: 15, color: Colors.white),
+          child: Container(
+            color: const Color(0xAA000000),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      _userCalcInput,
+                      style: const TextStyle(fontSize: 15, color: Colors.white),
+                    ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(2),
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    calcOutput,
-                    style: const TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
-              ]),
+                  Container(
+                    padding: const EdgeInsets.all(2),
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      _calcOutput,
+                      style: const TextStyle(
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ]),
+          ),
         ),
         Expanded(
           flex: 4,
@@ -171,6 +174,8 @@ class _CalculatorState extends State<Calculator> {
             crossAxisCount: 4,
             shrinkWrap: true,
             children: _buildCalculatorButtons(context),
+            childAspectRatio: (MediaQuery.of(context).size.width * 1.25) /
+                (MediaQuery.of(context).size.height - 265),
           ),
         ),
       ],
