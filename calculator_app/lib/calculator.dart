@@ -39,11 +39,15 @@ class _CalculatorState extends State<Calculator> {
       String finaluserinput = _userCalcInput;
       finaluserinput = _userCalcInput.replaceAll(ButtonConstants.multiply, '*');
 
-      Parser p = Parser();
-      Expression exp = p.parse(finaluserinput);
-      ContextModel cm = ContextModel();
-      double eval = exp.evaluate(EvaluationType.REAL, cm);
-      _calcOutput = eval.toString();
+      try {
+        Parser p = Parser();
+        Expression exp = p.parse(finaluserinput);
+        ContextModel cm = ContextModel();
+        double eval = exp.evaluate(EvaluationType.REAL, cm);
+        _calcOutput = eval.toString();
+      } catch (ex) {
+        _calcOutput = 'Error !';
+      }
     } else {
       _calcOutput = '0';
     }
